@@ -1,0 +1,74 @@
+services:
+  - type: web
+    name: afrimail-backend
+    runtime: python
+    region: frankfurt  # Choose: oregon, frankfurt, singapore, ohio
+    plan: starter  # starter, standard, pro
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.6"
+      - key: DEBUG
+        value: "false"
+      - key: APP_NAME
+        value: "Afrimail API"
+      - key: APP_VERSION
+        value: "1.0.0"
+      # Database - Set these in Render Dashboard (secrets)
+      - key: DATABASE_HOST
+        sync: false
+      - key: DATABASE_PORT
+        sync: false
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: DATABASE_NAME
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      # JWT - Set in Render Dashboard (secret)
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_ALGORITHM
+        value: "HS256"
+      - key: JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      # hCaptcha - Set in Render Dashboard (secrets)
+      - key: HCAPTCHA_SITE_KEY
+        sync: false
+      - key: HCAPTCHA_SECRET_KEY
+        sync: false
+      # Mailcow - Set in Render Dashboard (secrets)
+      - key: MAILCOW_API_URL
+        sync: false
+      - key: MAILCOW_API_KEY
+        sync: false
+      # Encryption - Set in Render Dashboard (secret)
+      - key: ENCRYPTION_KEY
+        sync: false
+      # SMTP - Set in Render Dashboard (secrets)
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM_EMAIL
+        sync: false
+      - key: SMTP_FROM_NAME
+        value: "Afrimail"
+      - key: SMTP_USE_TLS
+        value: "true"
+      # CORS - Update with your frontend URL
+      - key: CORS_ORIGINS
+        sync: false
+      # Rate Limiting
+      - key: RATE_LIMIT_SIGNUPS_PER_HOUR
+        value: "5"
+      - key: RATE_LIMIT_SIGNUPS_PER_DAY
+        value: "10"
