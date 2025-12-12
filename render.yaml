@@ -9,7 +9,7 @@ services:
     healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
-        value: "3.11.6"
+        value: "3.10.12"
       - key: DEBUG
         value: "false"
       - key: APP_NAME
